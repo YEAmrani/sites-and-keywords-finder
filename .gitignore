@@ -8,8 +8,7 @@ data/
 exports/
 desktop.ini
 
-# Private prompts, design notes, and local configuration
-config.json
+# Private prompts, design notes, and local files
 prompt.md
 design.md
 

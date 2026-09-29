@@ -1,0 +1,37 @@
+{
+  "niche_keywords": [
+    "ps5",
+    "xbox",
+    "gaming"
+  ],
+  "threads": 8,
+  "websites_limit": 25,
+  "keywords_limit": 100,
+  "min_words": 2,
+  "max_words": 2,
+  "pages_per_site": 1,
+  "timeout": 12.0,
+  "retries": 2,
+  "ddg_enabled": true,
+  "searxng_enabled": true,
+  "search_engines": [],
+  "searxng_url": "http://127.0.0.1:8888",
+  "proxies_enabled": false,
+  "proxy_list": "",
+  "domain_blocklist": [
+    "google.",
+    "facebook.com",
+    "youtube.com",
+    "instagram.com",
+    "twitter.com",
+    "x.com",
+    "tiktok.com",
+    "pinterest.com",
+    "reddit.com",
+    "amazon.",
+    "wikipedia.org",
+    "linkedin.com",
+    "yelp.com",
+    "tripadvisor.com"
+  ]
+}
