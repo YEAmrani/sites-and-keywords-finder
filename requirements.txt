@@ -1,0 +1,13 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+httpx[socks]>=0.27.0
+selectolax>=0.3.21
+yake>=0.4.8
+ddgs>=9.0.0
+python-multipart>=0.0.9
+pydantic>=2.7.0
+wordfreq>=3.1.1
+spacy>=3.7.5
+trafilatura>=1.12.2
+scikit-learn>=1.5.2
+keybert>=0.8.5

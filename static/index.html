@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0e0d16" />
+  <title>Site Finder · Keyword Extractor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,460;14..32,540;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <div class="side-brand"><span class="brand-mark">⌁</span><div><strong>Site Finder</strong><small>research workspace</small></div></div>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="side-nav">
+        <button class="nav-link active" data-tab="finder"><span class="nav-icon">⌕</span><span>Finder</span><kbd>1</kbd></button>
+        <button class="nav-link" data-tab="extractor"><span class="nav-icon">✦</span><span>Extractor</span><kbd>2</kbd></button>
+        <button class="nav-link" data-tab="settings"><span class="nav-icon">⚙</span><span>Settings</span><kbd>3</kbd></button>
+      </nav>
+      <div class="side-divider"></div>
+      <div class="side-label">NETWORK</div>
+      <div class="side-card">
+        <div class="side-card-head"><span class="status-dot"></span><span>Proxy pool</span></div>
+        <strong id="sidebarProxyStatus">Not loaded</strong>
+        <small id="sidebarProxyDetail">Direct requests only</small>
+        <button class="side-action" id="loadWorkspaceProxy">Load new_proxy.txt</button>
+      </div>
+      <div class="side-card engine-side-card">
+        <div class="side-card-head"><span class="status-dot teal-dot"></span><span>Local engines</span></div>
+        <strong>DuckDuckGo + SearXNG</strong>
+        <small>Provider status appears in each run</small>
+      </div>
+      <div class="sidebar-bottom"><span class="status-dot teal-dot"></span><span>Local workspace online</span></div>
+    </aside>
+
+    <div class="main-shell">
+      <header class="workspace-header">
+        <div><p class="header-kicker">LOCAL RESEARCH WORKSPACE</p><h1 id="workspaceTitle">Site Finder</h1><p id="workspaceSubtitle">Search, validate, and export working websites.</p></div>
+        <div class="header-right"><span class="live-pill"><span class="pulse-dot"></span>LIVE</span><span class="header-path">/ workspace / <strong id="headerPath">finder</strong></span></div>
+      </header>
+
+      <main class="workspace-main">
+        <section class="tab-panel active" id="finder-panel" data-panel="finder">
+          <div class="tool-toolbar"><div><span class="tool-index">01</span><span class="tool-name">FINDER</span></div><div class="toolbar-note">Multi-provider discovery · registered-domain dedupe · HTML validation</div></div>
+          <div class="dashboard-grid finder-grid">
+            <div class="control-card wide-card">
+              <div class="card-heading"><div><span class="section-label">SEARCH INPUT</span><h2>Build a site list</h2></div><span class="card-status"><span class="status-dot teal-dot"></span>ready</span></div>
+              <label class="field-label">Niche keywords<textarea id="nicheKeywords" rows="3" placeholder="PS5, xbox, gaming, gaming forums"></textarea></label>
+              <div class="engine-selector"><div><span class="field-label">Search dispatch</span><small class="helper">Choose all, one engine, or leave empty for automatic enabled-provider dispatch.</small></div><div class="engine-choice-row"><label class="engine-choice"><input id="engineAll" type="checkbox" data-engine-choice="all" /><span>All</span></label><label class="engine-choice"><input id="engineDdgChoice" type="checkbox" data-engine-choice="DuckDuckGo" /><span>DuckDuckGo</span></label><label class="engine-choice"><input id="engineSearxChoice" type="checkbox" data-engine-choice="SearXNG" /><span>SearXNG</span></label><label class="engine-choice"><input id="engineGoogleChoice" type="checkbox" data-engine-choice="Google" /><span>Google</span></label><label class="engine-choice"><input id="engineBingChoice" type="checkbox" data-engine-choice="Bing" /><span>Bing</span></label><label class="engine-choice"><input id="engineBraveChoice" type="checkbox" data-engine-choice="Brave" /><span>Brave</span></label></div><span id="engineSelectionHint" class="helper">Automatic: enabled providers run together.</span></div>
+              <div class="form-row four"><label>Websites to export<input id="websitesLimit" type="number" min="1" max="500" value="25" /></label><label>Threads at once<div class="range-wrap"><input id="threads" type="range" min="1" max="32" value="8" /><output id="threadsValue">8</output></div></label><label>Timeout (s)<input id="timeout" type="number" min="2" max="120" value="12" /></label><label>Retries<input id="retries" type="number" min="0" max="5" value="2" /></label></div>
+              <div class="button-row"><button class="button primary" id="finderStart">Start finder <span>↗</span></button><button class="button outline" id="finderPause" disabled>Pause</button><button class="button ghost danger" id="finderStop" disabled>Stop</button><span id="proxySummary" class="helper">No proxy rotation enabled.</span></div>
+            </div>
+            <div class="metric-card">
+              <div class="card-heading"><div><span class="section-label">RUN TELEMETRY</span><h2>Discovery</h2></div><span id="finderPercent" class="metric-percent">0%</span></div>
+              <div class="progress-track"><div id="finderProgress" class="progress-fill"></div></div>
+              <div class="stat-grid"><div><strong id="foundCount">0</strong><span>found</span></div><div><strong id="validatedCount">0</strong><span>validated</span></div><div><strong id="rejectedCount">0</strong><span>rejected</span></div><div><strong id="queryCount">0</strong><span>queries</span></div></div>
+              <div class="section-label">ENGINE COUNTERS</div><div id="engineStats" class="engine-stats"></div>
+            </div>
+          </div>
+          <div class="engine-strip"><div class="section-label">ACTIVE ENGINES</div><div class="engine-badges"><div class="engine-badge" data-engine="DuckDuckGo"><span class="engine-pulse"></span><span>DuckDuckGo</span><small>standalone</small></div><div class="engine-badge" data-engine="SearXNG"><span class="engine-pulse"></span><span>SearXNG</span><small>metasearch</small></div><div class="engine-badge" data-engine="Google"><span class="engine-pulse"></span><span>Google</span><small>via SearXNG</small></div><div class="engine-badge" data-engine="Bing"><span class="engine-pulse"></span><span>Bing</span><small>via SearXNG</small></div><div class="engine-badge" data-engine="Brave"><span class="engine-pulse"></span><span>Brave</span><small>via SearXNG</small></div></div></div>
+          <div class="activity-panel"><div class="activity-heading"><div><span class="section-label">LIVE NETWORK</span><h2>Fetching activity</h2></div><span id="finderActivityState" class="activity-state">waiting</span></div><div id="finderProxyFeed" class="proxy-feed"><div class="activity-empty">Proxy and engine activity will appear here when a run starts.</div></div></div>
+          <div class="results-header"><div><span class="section-label">LIVE OUTPUT</span><h2>Validated sites <span id="siteResultCount">0</span></h2></div><div class="export-actions"><button class="button tiny" data-export="sites" data-format="txt">TXT</button><button class="button tiny" data-export="sites" data-format="csv">CSV</button><button class="button tiny" data-export="sites" data-format="json">JSON</button><button class="button tiny" id="copySites">Copy</button></div></div>
+          <div id="sitesList" class="site-list empty-state"><div class="empty-icon">◌</div><p>Your validated results will stream in here.</p><small>Start a finder run to begin.</small></div>
+        </section>
+
+        <section class="tab-panel" id="extractor-panel" data-panel="extractor">
+          <div class="tool-toolbar"><div><span class="tool-index">02</span><span class="tool-name">EXTRACTOR</span></div><div class="toolbar-note">Parse site content · rank with YAKE · export exact word ranges</div></div>
+          <div class="dashboard-grid extractor-grid">
+            <div class="control-card wide-card">
+              <div class="card-heading"><div><span class="section-label">SOURCE LIST</span><h2>Extract keywords</h2></div><span class="card-status"><span class="status-dot teal-dot"></span>ready</span></div>
+              <label class="field-label">Sites to parse<textarea id="extractorUrls" rows="5" placeholder="Paste one URL per line, or send validated results from Finder."></textarea></label>
+              <div class="file-row"><label class="file-button">Upload list<input id="urlFile" type="file" accept=".txt,.csv,.json" /></label><button class="button outline" id="useFinderSites">Use finder results</button></div>
+              <div class="form-row four"><label>Keywords per site<input id="keywordsLimit" type="number" min="1" max="5000" value="100" /></label><label>Pages per site<input id="pagesPerSite" type="number" min="1" max="15" value="1" /></label><label>Word range<div class="number-pair"><input id="minWords" type="number" min="1" max="6" value="2" /><span>to</span><input id="maxWords" type="number" min="1" max="6" value="2" /></div></label><label>Threads<input id="extractThreads" type="number" min="1" max="32" value="8" /></label></div>
+              <div class="button-row"><button class="button primary" id="extractorStart">Start extractor <span>↗</span></button><button class="button outline" id="extractorPause" disabled>Pause</button><button class="button ghost danger" id="extractorStop" disabled>Stop</button><span id="extractorProxySummary" class="helper">Proxy rotation follows Finder settings.</span></div>
+            </div>
+            <div class="metric-card">
+              <div class="card-heading"><div><span class="section-label">RUN TELEMETRY</span><h2>Extraction</h2></div><span id="extractorPercent" class="metric-percent">0%</span></div>
+              <div class="progress-track"><div id="extractorProgress" class="progress-fill teal"></div></div><div class="stat-grid"><div><strong id="parsedCount">0/0</strong><span>processed sites</span></div><div><strong id="collectedCount">0/0</strong><span>collected / expected</span></div><div><strong id="keywordCount">0</strong><span>unique preview cap</span></div><div><strong id="keywordTarget">100</strong><span>quota / site</span></div></div><div class="extract-note"><span class="note-dot"></span><span>Collected count is bounded before ranking; final output removes duplicates</span></div>
+            </div>
+          </div>
+          <div class="activity-panel"><div class="activity-heading"><div><span class="section-label">LIVE NETWORK</span><h2>Fetching and extracting</h2></div><span id="extractorActivityState" class="activity-state">waiting</span></div><div id="extractorProxyFeed" class="proxy-feed"><div class="activity-empty">Each site will show its active proxy, country, and release state here.</div></div></div>
+          <div class="results-header"><div><span class="section-label">RANKED SIGNAL</span><h2>Keywords <span id="keywordResultCount">0</span></h2></div><div class="export-actions"><button class="button tiny" data-export="keywords" data-format="txt">TXT</button><button class="button tiny" data-export="keywords" data-format="csv">CSV</button><button class="button tiny" data-export="keywords" data-format="json">JSON</button><button class="button tiny" id="copyKeywords">Copy</button></div></div>
+          <div id="keywordsList" class="keyword-list empty-state"><div class="empty-icon">✦</div><p>Your ranked keyword set will appear here.</p><small>Use Finder results or paste a list to begin.</small></div>
+        </section>
+
+        <section class="tab-panel" id="settings-panel" data-panel="settings">
+          <div class="tool-toolbar"><div><span class="tool-index">03</span><span class="tool-name">SETTINGS</span></div><div class="toolbar-note">Provider toggles · proxy rotation · domain policy</div></div>
+          <div class="settings-grid">
+            <div class="control-card"><div class="card-heading"><div><span class="section-label">PROVIDERS</span><h2>Search engines</h2></div></div><label class="toggle-row"><span><strong>DuckDuckGo</strong><small>Direct search provider</small></span><input id="ddgEnabled" type="checkbox" checked /><i></i></label><label class="toggle-row"><span><strong>SearXNG</strong><small>Google, Bing, and Brave gateway</small></span><input id="searxEnabled" type="checkbox" checked /><i></i></label><label class="field-label">SearXNG URL<input id="searxUrl" value="http://localhost:8888" /></label></div>
+            <div class="control-card"><div class="card-heading"><div><span class="section-label">NETWORK</span><h2>Proxy rotation</h2></div></div><label class="toggle-row"><span><strong>Use proxy list</strong><small>Rotate proxies for search, validation, and extraction</small></span><input id="proxiesEnabled" type="checkbox" /><i></i></label><label class="field-label">Proxy list<textarea id="proxyList" rows="6" placeholder="ip:port&#10;user:pass@host:port"></textarea></label><div id="proxyParseStatus" class="helper">Supports HTTP, HTTPS, SOCKS4, and SOCKS5 formats.</div><div class="file-row"><label class="file-button">Upload proxy file<input id="proxyFile" type="file" accept=".txt,.csv" /></label><button class="button outline" id="loadWorkspaceProxySettings">Load new_proxy.txt</button></div></div>
+            <div class="control-card"><div class="card-heading"><div><span class="section-label">FILTERING</span><h2>Domain blocklist</h2></div></div><textarea id="blocklist" rows="8" placeholder="one domain or token per line"></textarea><div class="helper">Blocked domains are filtered before validation.</div></div>
+            <div class="control-card"><div class="card-heading"><div><span class="section-label">PERSISTENCE</span><h2>Request policy</h2></div></div><div class="form-row split"><label>Timeout (s)<input id="settingsTimeout" type="number" min="2" max="120" value="12" /></label><label>Retries<input id="settingsRetries" type="number" min="0" max="5" value="2" /></label></div><button class="button primary" id="saveSettings">Save settings <span>↗</span></button><div id="saveStatus" class="helper"></div></div>
+          </div>
+          <div class="history-wrap"><div class="results-header"><div><span class="section-label">MEMORY</span><h2>Recent runs</h2></div></div><div id="historyList" class="history-list"></div></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

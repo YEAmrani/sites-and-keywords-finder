@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local state and generated output
+data/
+exports/
+desktop.ini
+
+# Private prompts, design notes, and local configuration
+config.json
+prompt.md
+design.md
+
+# Proxy credentials and private environment files
+free-proxy-list.txt
+new_proxy.txt
+proxy*.txt
+proxies*.txt
+.env
+.env.*

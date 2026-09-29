@@ -1,0 +1,23 @@
+use_default_settings: true
+
+general:
+  instance_name: "Site Finder SearXNG"
+  debug: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  formats:
+    - html
+    - json
+
+server:
+  secret_key: "site-finder-local-secret-change-me"
+  limiter: false
+  image_proxy: false
+  bind_address: "0.0.0.0"
+  port: 8080
+
+ui:
+  default_theme: simple
+
