@@ -10,7 +10,8 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
-from .config import AppConfig, ExtractorRequest, FinderRequest, load_config, save_config
+from .ai import enhance_niches, list_models
+from .config import AIEnhanceRequest, AppConfig, ExtractorRequest, FinderRequest, load_config, save_config
 from .db import HistoryDB
 from .engine import RunManager
 from .proxy import parse_proxy_list
@@ -36,6 +37,24 @@ async def get_config():
 @app.put("/api/config")
 async def put_config(config: AppConfig):
     return save_config(config).model_dump()
+
+
+@app.get("/api/ai/models")
+async def ai_models(search: str = Query("")):
+    try:
+        return {"models": await list_models(search)}
+    except RuntimeError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+
+@app.post("/api/ai/enhance")
+async def ai_enhance(request: AIEnhanceRequest):
+    try:
+        return await enhance_niches(request.keywords, request.model)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
 @app.get("/api/history")

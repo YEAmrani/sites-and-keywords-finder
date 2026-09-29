@@ -19,3 +19,4 @@ proxy*.txt
 proxies*.txt
 .env
 .env.*
+.env.local

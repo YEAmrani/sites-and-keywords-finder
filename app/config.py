@@ -25,6 +25,7 @@ class AppConfig(BaseModel):
     searxng_enabled: bool = True
     search_engines: list[str] = Field(default_factory=list)
     searxng_url: str = "http://localhost:8888"
+    ai_model: str = "nvidia/nemotron-3-ultra-550b-a55b:free"
     proxies_enabled: bool = False
     proxy_list: str = ""
     domain_blocklist: list[str] = Field(default_factory=lambda: [
@@ -76,3 +77,8 @@ class ExtractorRequest(BaseModel):
     timeout: float = Field(default=12.0, ge=2, le=120)
     proxies_enabled: bool = False
     proxy_list: str = ""
+
+
+class AIEnhanceRequest(BaseModel):
+    keywords: list[str] = Field(default_factory=list, max_length=50)
+    model: str = "nvidia/nemotron-3-ultra-550b-a55b:free"

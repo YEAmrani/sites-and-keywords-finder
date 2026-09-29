@@ -16,6 +16,7 @@
   "searxng_enabled": true,
   "search_engines": [],
   "searxng_url": "http://127.0.0.1:8888",
+  "ai_model": "nvidia/nemotron-3-ultra-550b-a55b:free",
   "proxies_enabled": false,
   "proxy_list": "",
   "domain_blocklist": [
